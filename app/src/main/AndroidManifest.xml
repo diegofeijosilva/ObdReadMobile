@@ -5,6 +5,7 @@
     <!-- Permissões da aplicação -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:debuggable="true"
@@ -27,6 +28,8 @@
         <!-- Tela Inicial -->
         <activity android:name="com.obdread.activity.MainActivity"/>
 
+        <!-- Login do sistema -->
+        <activity android:name="com.obdread.activity.LoginActivity" android:screenOrientation="portrait" />
 
 <!--
         <activity android:name="com.obdread.activity.MainActivity">

@@ -1,0 +1,114 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <!-- Topo -->
+    <LinearLayout
+        android:id="@+id/topo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/top_gradiente"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp" >
+        
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/login"
+            />
+
+        
+    </LinearLayout>
+
+    <!-- Imagem Topo -->
+    <LinearLayout
+        android:id="@+id/imageTopo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:paddingTop="20dp"
+        android:layout_below="@+id/topo"> <!-- Faz com que esse layout fique abaixo -->
+        
+         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/user_icon"
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+    
+    <!-- Login do sistema -->
+    <LinearLayout
+        android:id="@+id/pesquisa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:paddingTop="25dp"
+        android:paddingLeft="5dp"
+        android:layout_below="@+id/imageTopo"> <!-- Faz com que esse layout fique abaixo -->
+        
+        <TextView 
+            	android:layout_width="fill_parent" 
+                android:layout_height="wrap_content"  
+                android:text="Selecione o Técnico:"  
+                android:textColor="#004284"
+                android:textStyle="bold" />
+
+            <Spinner  android:id="@+id/spUsuarios"        
+                android:layout_width="fill_parent"  
+                android:layout_height="wrap_content"  
+                android:textColor="#000000"   />
+
+            <TextView 
+                android:layout_width="fill_parent" 
+                android:layout_height="wrap_content"  
+                android:text="Digite a Senha:"  
+                android:textColor="#004284"
+                android:textStyle="bold"
+                android:paddingTop="15dp" />
+            
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite sua senha"
+                android:imeActionId="@+id/login"
+                android:imeOptions="actionUnspecified"
+             	android:inputType="numberPassword"
+                android:maxLines="1"
+                android:singleLine="true" /> <!--  -->
+
+            <Button
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:text="Logar no Sistema"
+                android:onClick="logar"/>
+       
+      	
+
+    </LinearLayout>
+
+    <!-- Rodape -->
+	<LinearLayout
+        android:id="@+id/rodape"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/top_gradiente"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="10dip" >
+	    
+    </LinearLayout>
+    
+</RelativeLayout>
