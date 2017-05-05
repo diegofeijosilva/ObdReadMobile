@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    			  android:title="Configurações Gerais">
+
+   <PreferenceCategory android:title="Parâmetros do Sistema" >
+   </PreferenceCategory>
+    
+  <PreferenceCategory android:title="Atualizações" > 
+      
+	  <CheckBoxPreference android:title="Atualização de dados"
+	                      android:defaultValue="true"
+	                      android:summary="Permite que o sistema atualize as informações em segundo plano."
+	                      android:key="updateData" />
+	  
+	  <CheckBoxPreference android:title="Atualização do software"
+	                      android:defaultValue="true"
+	                      android:summary="Permite que o sistema procure por novas atualizações."
+	                      android:key="updateSoftware" />
+	  
+  </PreferenceCategory>
+  
+  <PreferenceCategory android:title="Login" > 
+	  <CheckBoxPreference android:title="Login Automático"
+	                      android:defaultValue="true"
+	                      android:summary="Esta opção habilita a opção de login automático. Definir o tempo máximo de vida do login."
+	                      android:key="loginAutomatico" />
+	  
+	  <ListPreference     android:title="Vida Útil do Login"
+	                      android:summary="Defina o tempo máximo para o login automático"
+	                      android:key="vidaUtilLogin"
+	                      android:defaultValue="1"
+	                      android:entries="@array/listArray"
+	                      android:entryValues="@array/listValues" />
+  </PreferenceCategory>  
+  
+  <PreferenceCategory android:title="Desenvolvedor" > 
+	  <CheckBoxPreference android:title="Modo Debug"
+	                      android:defaultValue="false"
+	                      android:summary="Atenção! Esta opção NUNCA deverá ser habilitada"
+	                      android:key="modoDebug" />
+  </PreferenceCategory>  
+  
+</PreferenceScreen>
