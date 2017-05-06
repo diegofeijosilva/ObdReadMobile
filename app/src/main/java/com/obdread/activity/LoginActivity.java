@@ -1,18 +1,38 @@
 package com.obdread.activity;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -27,6 +47,8 @@ import android.widget.Toast;
 import com.obdread.dao.UsuarioDao;
 import com.obdread.ed.Usuario;
 
+import org.json.JSONObject;
+
 import obdread.com.obdreadmobile.R;
 
 /**
@@ -36,12 +58,13 @@ import obdread.com.obdreadmobile.R;
 public class LoginActivity extends Activity {
 	
 	private UsuarioDao dao = new UsuarioDao(this);
-	private Usuario usuario = new Usuario();
+	private Usuario usuario;
 	
 	private List<Usuario> listaUsuario;
 		
 	private Spinner comboLinhas;
 	private EditText password;
+	private EditText email;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +72,19 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		
 		// Criar o objeto spinner comboLinhas
-    	comboLinhas = (Spinner)findViewById(R.id.spUsuarios);
+    //	comboLinhas = (Spinner)findViewById(R.id.spUsuarios);
     	
     	password = (EditText) findViewById(R.id.password);
+		email =  (EditText) findViewById(R.id.email);
 
-		
+
+
 	}
 	
 	public void logar(View v){
+
+		LoginJsonAsyncTask task = new LoginJsonAsyncTask(this);
+		task.execute("TESTE");
 
 //		if(password.getText().toString().length() <= 0){
 //			password.setError("Informe sua senha!");
@@ -85,10 +113,10 @@ public class LoginActivity extends Activity {
 //				// Armazena nas prefer�ncias o usu�rio logado.
 //				Preferencias.setUltimoLogin(this, user.getNome());
 //
-				Intent it = new Intent (getBaseContext(), MainActivity.class);
-				startActivity(it);
-				
-				finish();
+//				Intent it = new Intent (getBaseContext(), MainActivity.class);
+//				startActivity(it);
+//
+//				finish();
 				
 ////			} else {
 ////
@@ -148,6 +176,141 @@ public class LoginActivity extends Activity {
 		            // TODO Auto-generated method stub
 		            // Do nothing.
 		        }
+	}
+
+
+	public class LoginJsonAsyncTask extends AsyncTask<String, Void, Usuario> {
+
+		private ProgressDialog progress;
+		private Context context;
+
+		private Context mContext;
+		private String urlStr = "";
+
+		public LoginJsonAsyncTask(Context context) {
+			this.context = context;
+		}
+
+		//        Ã‰ chamado antes de executar o processo (doInBackground), Podemos utilizar para criarmos um ProgressDialogo.
+//        Este mÃ©todo roda em Thread de interface.
+		@Override
+		protected void onPreExecute() {
+			//Cria novo um ProgressDialogo e exibe
+			progress = new ProgressDialog(context);
+			progress.setMessage("Aguarde, realizando o login....");
+			progress.show();
+		}
+
+		@Override
+		protected Usuario doInBackground(String... params) {
+			String urlString = params[0];
+
+			try {
+				//constants
+				URL url = new URL("http://192.168.14.206:8080/ObdReadWeb/rest/ObdService/login");
+				//URL url = new URL("http://192.168.14.206:8080/ObdReadWeb/rest/ObdService");
+				String message = new JSONObject().toString();
+
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				conn.setReadTimeout(15000 /*milliseconds*/);
+				conn.setConnectTimeout(15000 /* milliseconds */);
+				conn.setRequestMethod("POST"); // or POST
+				conn.setDoInput(true);
+				conn.setDoOutput(true);
+
+				// Don't use a cached copy.
+				conn.setUseCaches(false);
+				// conn.setFixedLengthStreamingMode(message.getBytes().length);
+
+				//conn.setRequestProperty("Connection", "Keep-Alive");
+				// conn.setRequestProperty("http.keepAlive", "false");
+
+				//make some HTTP header nicety
+				conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+
+				//  conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+				//   conn.setRequestProperty("X-Requested-With", "XMLHttpRequest");
+
+				// Abre a conexão
+				conn.connect();
+
+				//// Monta os parâmetros
+				JSONObject postDataParams = new JSONObject();
+				postDataParams.put("email", "teste@teste.com.br");
+				postDataParams.put("senha", "1234");
+				Log.e("params",postDataParams.toString());
+
+				DataOutputStream wr = new DataOutputStream(conn.getOutputStream ());
+				wr.writeBytes(postDataParams.toString());
+
+				int responseCode = conn.getResponseCode();
+
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+
+					InputStream in = conn.getInputStream();
+
+					BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+					StringBuilder sb = new StringBuilder();
+					String line;
+					while ((line = br.readLine()) != null) {
+						sb.append(line + "\n");
+					}
+					br.close();
+
+					Log.i("JSON", sb.toString());
+
+				} else {
+					Toast.makeText(context, "Sistema Web não disponível",
+							Toast.LENGTH_LONG).show();
+				}
+
+			} catch (ProtocolException e) {
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				return new Usuario();
+			}
+
+		}
+
+		public String getPostDataString(JSONObject params) throws Exception {
+
+			StringBuilder result = new StringBuilder();
+			boolean first = true;
+
+			Iterator<String> itr = params.keys();
+
+			while(itr.hasNext()){
+
+				String key= itr.next();
+				Object value = params.get(key);
+
+				if (first)
+					first = false;
+				else
+					result.append("&");
+
+				result.append(URLEncoder.encode(key, "UTF-8"));
+				result.append("=");
+				result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+			}
+			return result.toString();
+		}
+
+		// Atualiza a thread prinicpal
+		@Override
+		protected void onPostExecute(Usuario result) {
+			//Cancela progressDialogo
+			progress.dismiss();
+
+
+			usuario = result;
+		}
+
 	}
 	
 }

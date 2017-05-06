@@ -49,6 +49,7 @@ public class SplashActivity extends Activity implements Runnable {
 	@Override
 	public void run() {
 
+		new DownloadJsonAsyncTask().execute("TESTE");
 
 		// Verifica se já tem um usuário setado no sistema
 		// Na instalação do aplicativo deve exigir o login no sistema web
