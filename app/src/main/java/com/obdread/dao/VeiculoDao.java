@@ -1,27 +1,23 @@
 package com.obdread.dao;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.obdread.ed.Usuario;
+import com.obdread.ed.Veiculo;
 
-public class UsuarioDao extends DaoGenerico {
-	
-	private static String TABELA = "USUARIO";
+import java.text.SimpleDateFormat;
+
+public class VeiculoDao extends DaoGenerico {
+
+	private static String TABELA = "VEICULO";
 	private SQLiteDatabase db;
-	
-	SimpleDateFormat setDate = new SimpleDateFormat("yyyy/MM/dd");
 
-	public UsuarioDao(Context context) {
+
+	public VeiculoDao(Context context) {
 		super(context);
 	}
 	
@@ -37,23 +33,23 @@ public class UsuarioDao extends DaoGenerico {
 	 * SERVIÇO REST DO SISTEMA WEB
 	 * @return
      */
-	public Usuario existeUsuario (){
+	public Veiculo buscaVeiculoUsuario (){
 		dbOpen();
 
 		Cursor c = db.query(TABELA, null, null,null,null, null,null);
 
 		if (c.getCount() > 0){
 
-			Usuario usuario = new Usuario();
+			Veiculo vei = new Veiculo();
 
 			c.moveToFirst();
-			usuario.setId(c.getLong(0));
-			usuario.setTicket(c.getString(1));
+			vei.setId(c.getLong(0));
+			vei.setNome(c.getString(1));
 
 			c.close();
 			dbClose();
 
-			return usuario;
+			return vei;
 		}
 
 		c.close();
@@ -62,20 +58,29 @@ public class UsuarioDao extends DaoGenerico {
 	}
 
 	//	// Insere novo usuario
-	public Integer inserir(Usuario usuario) {
+	public Integer inserir(Veiculo veiculo) {
 
 			dbOpen();
 
 			ContentValues values = new ContentValues();
 
-			values.put("ticket", usuario.getTicket());
-			values.put("email", usuario.getEmail());
+			values.put("id", veiculo.getId());
+			values.put("nome", veiculo.getNome());
 
 			int i = (int) db.insert(TABELA, "", values);
 
 			dbClose();
 
 		return i;
+	}
+
+	// deleta o veiculo selecionado
+	public void deletarTodos(){
+		dbOpen();
+		db.execSQL("delete from " + TABELA);
+		dbClose();
+
+		Log.i("VEICULO_DAO","TODOS OS REGISTROS FORAM DELETADOS");
 	}
 
 //	// Retorna um usuario conforme id

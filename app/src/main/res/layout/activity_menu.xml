@@ -1,0 +1,184 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <!-- Topo -->
+    <LinearLayout
+        android:id="@+id/topo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/top_gradiente"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="5dip" >
+
+        <TextView
+            android:id="@+id/userLogado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:gravity="left"
+            android:text="| Usuário Logado: "/>
+
+        <TextView
+            android:id="@+id/userOS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:gravity="left"
+            android:text="Você possui 12 chamados a serem atendidos."/>
+
+    </LinearLayout>
+
+    <!-- Imagem Topo -->
+    <LinearLayout
+        android:id="@+id/imageTopo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="15dp"
+        android:layout_below="@+id/topo"> <!-- Faz com que esse layout fique abaixo -->
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.58"
+            android:src="@drawable/icone_menu"/>
+
+    </LinearLayout>
+
+    <!-- Corpo -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingTop="15dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_below="@+id/imageTopo">
+
+        <!-- Linha 1 Botões -->
+        <LinearLayout
+            android:id="@+id/lnBtn1"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imageButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.28"
+                android:onClick="buscarOS"
+                android:src="@drawable/menu_os"
+                android:background="@android:drawable/list_selector_background"/> <!-- Efeito de click -->
+
+            <ImageView
+                android:id="@+id/imageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.28"
+                android:paddingTop="8dp"
+                android:onClick="atualizar"
+                android:src="@drawable/menu_update"
+                android:background="@android:drawable/list_selector_background"/> <!-- Efeito de click -->
+
+        </LinearLayout>
+
+        <!-- Linha 2 Botões -->
+        <LinearLayout
+            android:id="@+id/lnBtn2"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_below="@+id/lnBtn1"> <!-- Efeito de click -->
+
+            <ImageView
+                android:id="@+id/imageButton5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.28"
+                android:paddingTop="18dp"
+                android:onClick="logoff"
+                android:src="@drawable/logoff"
+                android:background="@android:drawable/list_selector_background"/> <!-- Efeito de click -->
+
+            <ImageView
+                android:id="@+id/imageButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.18"
+                android:paddingTop="10dp"
+                android:onClick="preferences"
+                android:src="@drawable/menu_preferences"
+                android:background="@android:drawable/list_selector_background"/> <!-- Efeito de click -->
+
+        </LinearLayout>
+
+        <!-- Linha 3 Botões -->
+        <LinearLayout
+            android:id="@+id/lnBtn3"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_below="@+id/lnBtn2">
+
+        </LinearLayout>
+
+        <!-- Linha 4 Botões -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Imagem de fundo dos correios -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+    </LinearLayout>
+
+
+    <!-- Rodape -->
+    <LinearLayout
+        android:id="@+id/rodape"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/top_gradiente"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="10dip" >
+
+        <TextView
+            android:id="@+id/txtVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:gravity="left"
+            android:text="Versão: 1.1.1"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

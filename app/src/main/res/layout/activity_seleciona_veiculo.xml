@@ -51,41 +51,19 @@
         android:paddingTop="25dp"
         android:paddingLeft="5dp"
         android:layout_below="@+id/imageTopo"> <!-- Faz com que esse layout fique abaixo -->
-        
-        <TextView 
-            	android:layout_width="fill_parent" 
-                android:layout_height="wrap_content"  
-                android:text="Digite seu email:"
-                android:textColor="#004284"
-                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:imeActionId="@+id/login"
-            android:imeOptions="actionUnspecified"
-            android:maxLines="1"
-            android:singleLine="true" /> <!--  -->
+            android:text="Selecione o veiculo:"
+            android:textColor="#004284"
+            android:textStyle="bold"
+            android:paddingTop="15dp" />
 
-            <TextView 
-                android:layout_width="fill_parent" 
-                android:layout_height="wrap_content"  
-                android:text="Digite a Senha:"  
-                android:textColor="#004284"
-                android:textStyle="bold"
-                android:paddingTop="15dp" />
-            
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Digite sua senha"
-                android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified"
-             	android:inputType="numberPassword"
-                android:maxLines="1"
-                android:singleLine="true" /> <!--  -->
+        <Spinner  android:id="@+id/spUsuarios"
+             android:layout_width="fill_parent"
+             android:layout_height="wrap_content"
+             android:textColor="#000000"   />
 
             <Button
                 android:id="@+id/sign_in_button"
@@ -95,8 +73,8 @@
                 android:layout_marginTop="16dp"
                 android:paddingLeft="32dp"
                 android:paddingRight="32dp"
-                android:text="Logar no Sistema"
-                android:onClick="logar"/>
+                android:text="Salvar"
+                android:onClick="salvarVeiculo"/>
        
       	
 

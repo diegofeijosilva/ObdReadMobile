@@ -19,9 +19,17 @@ public class MontaEstruturaBanco extends DaoGenerico {
 	// Tabela de Usuarios
     private static final String USUARIO =
     		"CREATE TABLE IF NOT EXISTS USUARIO ( " +
-            " ID integer PRIMARY KEY, " +
-            " TICKET varchar(100) " +
+            " id integer PRIMARY KEY, " +
+            " ticket varchar(100), " +
+			" email varchar(100) " +
             " );";
+
+	// Tabela de Usuarios
+	private static final String VEICULO =
+			"CREATE TABLE IF NOT EXISTS VEICULO ( " +
+					" id integer, " +
+					" nome varchar(100) " +
+					" );";
 
 //    // Tabela de usu�rios
 //    private static final String USUARIO =
@@ -89,9 +97,7 @@ public class MontaEstruturaBanco extends DaoGenerico {
 		
 		// Cria as tabelas
 		db.execSQL(USUARIO);
-//		db.execSQL(MOTIVO);
-//		db.execSQL(OS);
-//		db.execSQL(LOG);
+		db.execSQL(VEICULO);
 
 		dbClose();
 

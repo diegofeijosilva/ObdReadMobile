@@ -51,6 +51,8 @@ public class SplashActivity extends Activity implements Runnable {
 
 		new DownloadJsonAsyncTask().execute("TESTE");
 
+		//TODO: DESCOMENTAR ESTE TRECHO DEPOIS
+//		/// Verifica se tem um usuário cadastrado. Se tiver vai para a tela de menu.
 		// Verifica se já tem um usuário setado no sistema
 		// Na instalação do aplicativo deve exigir o login no sistema web
 		// através da serviço rest.
@@ -79,7 +81,7 @@ public class SplashActivity extends Activity implements Runnable {
 
 	private void startMenu(){
 		Log.i("MENU","Iniciando a tela de MENU do sistema");
-		Intent it = new Intent (getApplicationContext(), MainActivity.class);
+		Intent it = new Intent (getApplicationContext(), MenuActivity.class);
 		startActivity(it);
 	}
 	

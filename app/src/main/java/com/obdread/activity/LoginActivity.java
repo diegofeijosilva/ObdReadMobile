@@ -44,9 +44,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.obdread.dao.UsuarioDao;
 import com.obdread.ed.Usuario;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import obdread.com.obdreadmobile.R;
@@ -58,12 +60,13 @@ import obdread.com.obdreadmobile.R;
 public class LoginActivity extends Activity {
 	
 	private UsuarioDao dao = new UsuarioDao(this);
+	private Usuario usuarioEnvio = new Usuario();
 	private Usuario usuario;
 	
 	private List<Usuario> listaUsuario;
 		
 	private Spinner comboLinhas;
-	private EditText password;
+	private EditText senha;
 	private EditText email;
 
 	@Override
@@ -74,17 +77,28 @@ public class LoginActivity extends Activity {
 		// Criar o objeto spinner comboLinhas
     //	comboLinhas = (Spinner)findViewById(R.id.spUsuarios);
     	
-    	password = (EditText) findViewById(R.id.password);
+    	senha = (EditText) findViewById(R.id.password);
 		email =  (EditText) findViewById(R.id.email);
-
-
 
 	}
 	
 	public void logar(View v){
 
+		if (email.getText().toString().length() == 0) {
+			email.setError("Digite o email!");
+			return;
+		}
+
+		if (senha.getText().toString().length() == 0) {
+			senha.setError("Digite a senha!");
+			return;
+		}
+
 		LoginJsonAsyncTask task = new LoginJsonAsyncTask(this);
 		task.execute("TESTE");
+
+		usuarioEnvio.setEmail(email.getText().toString());
+		usuarioEnvio.setSenha(senha.getText().toString());
 
 //		if(password.getText().toString().length() <= 0){
 //			password.setError("Informe sua senha!");
@@ -186,6 +200,7 @@ public class LoginActivity extends Activity {
 
 		private Context mContext;
 		private String urlStr = "";
+		Gson gson = new Gson();
 
 		public LoginJsonAsyncTask(Context context) {
 			this.context = context;
@@ -236,8 +251,8 @@ public class LoginActivity extends Activity {
 
 				//// Monta os parâmetros
 				JSONObject postDataParams = new JSONObject();
-				postDataParams.put("email", "teste@teste.com.br");
-				postDataParams.put("senha", "1234");
+				postDataParams.put("email", usuarioEnvio.getEmail());
+				postDataParams.put("senha", usuarioEnvio.getSenha());
 				Log.e("params",postDataParams.toString());
 
 				DataOutputStream wr = new DataOutputStream(conn.getOutputStream ());
@@ -259,6 +274,9 @@ public class LoginActivity extends Activity {
 
 					Log.i("JSON", sb.toString());
 
+
+					return gson.fromJson(sb.toString(),Usuario.class);
+
 				} else {
 					Toast.makeText(context, "Sistema Web não disponível",
 							Toast.LENGTH_LONG).show();
@@ -270,9 +288,11 @@ public class LoginActivity extends Activity {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
-			} finally {
-				return new Usuario();
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
+
+			return null;
 
 		}
 
@@ -308,9 +328,29 @@ public class LoginActivity extends Activity {
 			progress.dismiss();
 
 
+			Log.i("JSON RETORNO",gson.toJson(usuario));
+
 			usuario = result;
+
+			/// Se conseguiu logar vai inserir o usuário no banco
+			if(usuario != null && usuario.getTicket() != null){
+				dao.inserir(usuario);
+				startSelecionaVeiculo();
+			} else {
+				Toast.makeText(context,"Servidor indisponível no momento.",
+						Toast.LENGTH_LONG).show();
+			}
 		}
 
+	}
+
+	private void startSelecionaVeiculo(){
+		Log.i("MENU","Iniciando a tela de MENU do sistema");
+		Intent it = new Intent (getApplicationContext(), SelecionaVeiculoActivity.class);
+		startActivity(it);
+
+		// Fecha a tela de login
+		finish();
 	}
 	
 }
