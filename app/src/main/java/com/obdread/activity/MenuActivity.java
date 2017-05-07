@@ -22,4 +22,13 @@ public class MenuActivity extends Activity {
         Intent it = new Intent (getBaseContext(), Preferencias.class);
         startActivity(it);
     }
+
+
+    //// INICIA A TELA DE LEITURA DO OBD
+    // Activity das preferÃªncias
+    public void readObd(View v){
+        //Carrega o rastreamento
+        Intent it = new Intent (getBaseContext(), MainActivity.class);
+        startActivity(it);
+    }
 }

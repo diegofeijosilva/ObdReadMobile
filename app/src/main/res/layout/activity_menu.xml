@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.28"
-                android:onClick="buscarOS"
+                android:onClick="readObd"
                 android:src="@drawable/menu_os"
                 android:background="@android:drawable/list_selector_background"/> <!-- Efeito de click -->
 
