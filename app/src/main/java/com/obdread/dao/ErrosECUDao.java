@@ -1,27 +1,22 @@
 package com.obdread.dao;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.obdread.ed.Usuario;
 
-public class UsuarioDao extends DaoGenerico {
-	
-	private static String TABELA = "USUARIO";
+import java.text.SimpleDateFormat;
+
+public class ErrosECUDao extends DaoGenerico {
+
+	private static String TABELA = "ERROSECU";
 	private SQLiteDatabase db;
-	
+
 	SimpleDateFormat setDate = new SimpleDateFormat("yyyy/MM/dd");
 
-	public UsuarioDao(Context context) {
+	public ErrosECUDao(Context context) {
 		super(context);
 	}
 	
@@ -76,34 +71,6 @@ public class UsuarioDao extends DaoGenerico {
 			dbClose();
 
 		return i;
-	}
-
-	/**
-	 * Retorna o usuário do sistema
-	 * @return
-	 */
-	public Usuario getUsuario (){
-		dbOpen();
-
-		Cursor c = db.query(TABELA, null, null,null,null, null,null);
-
-		if (c.getCount() > 0){
-
-			Usuario usuario = new Usuario();
-
-			c.moveToFirst();
-			usuario.setId(c.getLong(0));
-			usuario.setTicket(c.getString(1));
-
-			c.close();
-			dbClose();
-
-			return usuario;
-		}
-
-		c.close();
-		dbClose();
-		return null;
 	}
 
 //	// Retorna um usuario conforme id

@@ -55,7 +55,13 @@
 -->
 
         <!-- Tela de preferencias -->
-        <activity android:name="com.obdread.activity.Preferencias" android:screenOrientation="portrait"/>
+        <!--<activity android:name="com.obdread.activity.Preferencias" android:screenOrientation="portrait"/>-->
+
+        <!-- Tela de preferencias -->
+        <activity android:name="com.obdread.activity.ConfigActivity" android:screenOrientation="portrait"/>
+
+        <!-- Listagem de Erros da ECU -->
+        <activity android:name="com.obdread.activity.TroubleCodesActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

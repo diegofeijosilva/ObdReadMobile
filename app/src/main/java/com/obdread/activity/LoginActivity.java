@@ -206,8 +206,6 @@ public class LoginActivity extends Activity {
 			this.context = context;
 		}
 
-		//        Ã‰ chamado antes de executar o processo (doInBackground), Podemos utilizar para criarmos um ProgressDialogo.
-//        Este mÃ©todo roda em Thread de interface.
 		@Override
 		protected void onPreExecute() {
 			//Cria novo um ProgressDialogo e exibe
@@ -221,7 +219,7 @@ public class LoginActivity extends Activity {
 			String urlString = params[0];
 
 			try {
-				//constants
+				//URL url = new URL(Preferencias.getUrlServicoRestWeb(context) + "/rest/ObdService/login");
 				URL url = new URL("http://192.168.14.206:8080/ObdReadWeb/rest/ObdService/login");
 				//URL url = new URL("http://192.168.14.206:8080/ObdReadWeb/rest/ObdService");
 				String message = new JSONObject().toString();

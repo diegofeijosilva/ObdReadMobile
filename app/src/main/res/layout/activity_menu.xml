@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF"
             android:gravity="left"
-            android:text="Você possui 12 chamados a serem atendidos."/>
+            android:text=" "/>
 
     </LinearLayout>
 
@@ -42,11 +42,11 @@
         android:paddingTop="15dp"
         android:layout_below="@+id/topo"> <!-- Faz com que esse layout fique abaixo -->
 
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.58"
-            android:src="@drawable/icone_menu"/>
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:src="@drawable/menu"/>
 
     </LinearLayout>
 
@@ -56,7 +56,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingTop="15dp"
+        android:paddingTop="20dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:layout_below="@+id/imageTopo">
@@ -72,9 +72,9 @@
             <ImageView
                 android:id="@+id/imageButton1"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.28"
-                android:onClick="readObd"
+                android:layout_height="match_parent"
+                android:layout_weight="0.42"
+                android:onClick="readErrosECU"
                 android:src="@drawable/menu_os"
                 android:background="@android:drawable/list_selector_background"/> <!-- Efeito de click -->
 
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.28"
                 android:paddingTop="8dp"
-                android:onClick="atualizar"
+                android:onClick="readObd"
                 android:src="@drawable/menu_update"
                 android:background="@android:drawable/list_selector_background"/> <!-- Efeito de click -->
 
@@ -96,7 +96,7 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="13.92"
             android:layout_below="@+id/lnBtn1"> <!-- Efeito de click -->
 
             <ImageView

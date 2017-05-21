@@ -71,7 +71,7 @@ public class TroubleCodesActivity extends Activity {
              Log.d(TAG, "Message received on handler");
             switch (msg.what) {
                 case NO_BLUETOOTH_DEVICE_SELECTED:
-                    makeToast(getString(R.string.text_bluetooth_nodevice));
+                    makeToast("Sem interface OBD-II selecionado");
                     finish();
                     break;
                 case CANNOT_CONNECT_TO_DEVICE:
@@ -80,15 +80,15 @@ public class TroubleCodesActivity extends Activity {
                     break;
 
                 case OBD_COMMAND_FAILURE:
-                    makeToast(getString(R.string.text_obd_command_failure));
+                    makeToast("Falha ao conectar na interface OBD-II");
                     finish();
                     break;
                 case OBD_COMMAND_FAILURE_IO:
-                    makeToast(getString(R.string.text_obd_command_failure) + " IO");
+                    makeToast("Comando OBD-II falhou: IO");
                     finish();
                     break;
                 case OBD_COMMAND_FAILURE_IE:
-                    makeToast(getString(R.string.text_obd_command_failure) + " IE");
+                    makeToast("Comando OBD-II falhou: IE");
                     finish();
                     break;
                 case OBD_COMMAND_FAILURE_MIS:
@@ -96,11 +96,11 @@ public class TroubleCodesActivity extends Activity {
                     finish();
                     break;
                 case OBD_COMMAND_FAILURE_UTC:
-                    makeToast(getString(R.string.text_obd_command_failure) + " UTC");
+                    makeToast("Comando OBD-II falhou: UTC");
                     finish();
                     break;
                 case OBD_COMMAND_FAILURE_NODATA:
-                    makeToastLong(getString(R.string.text_noerrors));
+                    makeToastLong("Sem Erros na ECU");
                     //finish();
                     break;
 
@@ -217,17 +217,23 @@ public class TroubleCodesActivity extends Activity {
         //String[] dtcCodes = new String[]{};
         ArrayList<String> dtcCodes = new ArrayList<String>();
         //int i =1;
-        if (res != null) {
+        if (res != null && res != "") {
             for (String dtcCode : res.split("\n")) {
                 dtcCodes.add(dtcCode + " : " + dtcVals.get(dtcCode));
                 Log.d("TEST", dtcCode + " : " + dtcVals.get(dtcCode));
+
+                //// ADICIONA NA TABELA DE ERROS DA ECU
             }
         } else {
-            dtcCodes.add("There are no errors");
+            dtcCodes.add("Não foram encontrados erros na ECU do veículo!");
         }
         ArrayAdapter<String> myarrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dtcCodes);
         lv.setAdapter(myarrayAdapter);
         lv.setTextFilterEnabled(true);
+    }
+
+    private void adicionaNoLogOsErros(){
+
     }
 
 
@@ -277,16 +283,16 @@ public class TroubleCodesActivity extends Activity {
 
             //Get the current thread's token
             synchronized (this) {
-                Log.d(TAG, "Starting service..");
+                Log.d(TAG, "Iniciando serviço..");
                 // get the remote Bluetooth device
 
                 final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
                 dev = btAdapter.getRemoteDevice(params[0]);
 
-                Log.d(TAG, "Stopping Bluetooth discovery.");
+                Log.d(TAG, "Parando o serviço Bluetooth.");
                 btAdapter.cancelDiscovery();
 
-                Log.d(TAG, "Starting OBD connection..");
+                Log.d(TAG, "Iniciando conexão com a interface OBD-II..");
 
                 // Instantiate a BluetoothSocket for the remote device and connect it.
                 try {

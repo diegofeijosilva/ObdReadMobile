@@ -31,6 +31,17 @@ public class MontaEstruturaBanco extends DaoGenerico {
 					" nome varchar(100) " +
 					" );";
 
+	// Tabela de Erros da ECU
+	private static final String ERROSECU =
+			"CREATE TABLE IF NOT EXISTS ERROSECU ( " +
+					" hashuser varchar(100), " +
+					" idveiculo integer, " +
+					" data integer, " +
+					" codigo varchar(5), " +
+					" descricao varchar(100), " +
+					" level integer" +
+					" );";
+
 //    // Tabela de usu�rios
 //    private static final String USUARIO =
 //    		"CREATE TABLE IF NOT EXISTS usuario ( " +
@@ -98,6 +109,7 @@ public class MontaEstruturaBanco extends DaoGenerico {
 		// Cria as tabelas
 		db.execSQL(USUARIO);
 		db.execSQL(VEICULO);
+		db.execSQL(ERROSECU);
 
 		dbClose();
 

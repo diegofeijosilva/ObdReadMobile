@@ -270,7 +270,7 @@ public class SelecionaVeiculoActivity extends Activity {
 				//pega nome pela posição
 				veiculoSelecionado = (Veiculo) parent.getSelectedItem();
 				//imprime um Toast na tela com o nome que foi selecionado
-				Toast.makeText(SelecionaVeiculoActivity.this, "Nome Selecionado: " + veiculoSelecionado.getNome(), Toast.LENGTH_LONG).show();
+				//Toast.makeText(SelecionaVeiculoActivity.this, "Nome Selecionado: " + veiculoSelecionado.getNome(), Toast.LENGTH_LONG).show();
 			}
 
 			@Override

@@ -45,6 +45,19 @@ public class Preferencias extends PreferenceActivity {
 		Long i = Long.parseLong(SP.getString("vidaUtilLogin", "1"));
 		return i * 3600;
 	}
+
+	// Retorna a url do serviço Rest
+	public static String getUrlServicoRestWeb(Context context){
+		SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(context);
+		return SP.getString("SERVICO_REST_WEB", "NA");
+	}
+
+	public static void setUrlServicoRestWeb(Context context, String servicoRestWeb){
+		SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(context);
+		Editor edit = SP.edit();
+		edit.putString("SERVICO_REST_WEB", servicoRestWeb);
+		edit.apply();
+	}
 	
 
 }
