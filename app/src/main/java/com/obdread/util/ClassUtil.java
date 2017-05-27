@@ -119,10 +119,8 @@ public class ClassUtil {
     
     //Retorna a data atual do sistema
     public static String dataAtual(){
-    	
     	SimpleDateFormat simpleFormat = new SimpleDateFormat("dd/MM/yyyy");
-   
-    return simpleFormat.format(new Date());	
+   		return simpleFormat.format(new Date());
     }
     
     // Enviar a hora no padr�o 00:00 em milisegundos

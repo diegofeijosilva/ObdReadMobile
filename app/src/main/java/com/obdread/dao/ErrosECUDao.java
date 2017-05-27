@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.obdread.ed.ErrosECU;
 import com.obdread.ed.Usuario;
 
 import java.text.SimpleDateFormat;
@@ -26,50 +27,32 @@ public class ErrosECUDao extends DaoGenerico {
 	// Fecha o banco
 	private void dbClose(){ this.db.close(); }
 
-	/**
-	 * VERIFICA SE EXISTE UM USUÁRIO NO BANCO LOCAL
-	 * NA INSTALAÇÃO DO APLICATIVO VAI EXIGIR O LOGIN ATRAVÉS DO
-	 * SERVIÇO REST DO SISTEMA WEB
-	 * @return
-     */
-	public Usuario existeUsuario (){
+	//	// Insere novo usuario
+	public Integer inserir(ErrosECU errosECU) {
 		dbOpen();
+		ContentValues values = new ContentValues();
 
-		Cursor c = db.query(TABELA, null, null,null,null, null,null);
+		values.put("hashuser", errosECU.getHashUser());
+		values.put("idveiculo", errosECU.getIdVeiculo());
+		values.put("data", errosECU.getData());
+		values.put("codigo", errosECU.getCodigo());
+		values.put("descricao", errosECU.getDescricao());
+		values.put("level", errosECU.getLevel());
 
-		if (c.getCount() > 0){
-
-			Usuario usuario = new Usuario();
-
-			c.moveToFirst();
-			usuario.setId(c.getLong(0));
-			usuario.setTicket(c.getString(1));
-
-			c.close();
-			dbClose();
-
-			return usuario;
-		}
-
-		c.close();
+		int i = (int) db.insert(TABELA, "", values);
 		dbClose();
-		return null;
+		return i;
 	}
 
-	//	// Insere novo usuario
-	public Integer inserir(Usuario usuario) {
-
+	public int deletar(int hashuser) {
 			dbOpen();
+			String where = "hashuser" + "=?";
 
-			ContentValues values = new ContentValues();
+			String _id = String.valueOf(hashuser);
+			String[] whereArgs = new String[] { _id };
 
-			values.put("ticket", usuario.getTicket());
-			values.put("email", usuario.getEmail());
-
-			int i = (int) db.insert(TABELA, "", values);
-
+			int i = db.delete(TABELA, where, whereArgs);
 			dbClose();
-
 		return i;
 	}
 

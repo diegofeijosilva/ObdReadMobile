@@ -36,7 +36,7 @@ public class MontaEstruturaBanco extends DaoGenerico {
 			"CREATE TABLE IF NOT EXISTS ERROSECU ( " +
 					" hashuser varchar(100), " +
 					" idveiculo integer, " +
-					" data integer, " +
+					" data varchar(10), " +
 					" codigo varchar(5), " +
 					" descricao varchar(100), " +
 					" level integer" +

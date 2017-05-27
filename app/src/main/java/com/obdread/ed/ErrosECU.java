@@ -11,7 +11,7 @@ public class ErrosECU implements Serializable {
     /// Hash do usuário
     private String hashUser;
     private Long idVeiculo;
-    private Integer data;
+    private String data;
     private String codigo;
     private String descricao;
     private Integer level;
@@ -33,11 +33,11 @@ public class ErrosECU implements Serializable {
         this.idVeiculo = idVeiculo;
     }
 
-    public Integer getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(Integer data) {
+    public void setData(String data) {
         this.data = data;
     }
 

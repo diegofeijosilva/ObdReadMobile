@@ -33,8 +33,14 @@ import com.github.pires.obd.exceptions.MisunderstoodCommandException;
 import com.github.pires.obd.exceptions.NoDataException;
 import com.github.pires.obd.exceptions.UnableToConnectException;
 import obdread.com.obdreadmobile.R;
+
+import com.obdread.dao.ErrosECUDao;
+import com.obdread.dao.UsuarioDao;
+import com.obdread.dao.VeiculoDao;
+import com.obdread.ed.ErrosECU;
 import com.obdread.io.BluetoothManager;
 import com.google.inject.Inject;
+import com.obdread.util.ClassUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -64,6 +70,12 @@ public class TroubleCodesActivity extends Activity {
     private GetTroubleCodesTask gtct;
     private BluetoothDevice dev = null;
     private BluetoothSocket sock = null;
+
+    private ErrosECU errosEcu;
+    private ErrosECUDao errosECUDao;
+    private UsuarioDao userDao;
+    private VeiculoDao veiculoDao;
+
     private Handler mHandler = new Handler(new Handler.Callback() {
 
 
@@ -121,6 +133,10 @@ public class TroubleCodesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        errosECUDao = new ErrosECUDao(this);
+        userDao = new UsuarioDao(this);
+        veiculoDao = new VeiculoDao(this);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -211,6 +227,8 @@ public class TroubleCodesActivity extends Activity {
     }
     private void dataOk(String res) {
         ListView lv = (ListView) findViewById(R.id.listView);
+
+        /// Monta uma lista com os códigos de erro + Descrição
         Map<String, String> dtcVals = getDict(R.array.dtc_keys, R.array.dtc_values);
         //TODO replace below codes (res) with aboce dtcVals
         //String tmpVal = dtcVals.get(res.split("\n"));
@@ -222,7 +240,8 @@ public class TroubleCodesActivity extends Activity {
                 dtcCodes.add(dtcCode + " : " + dtcVals.get(dtcCode));
                 Log.d("TEST", dtcCode + " : " + dtcVals.get(dtcCode));
 
-                //// ADICIONA NA TABELA DE ERROS DA ECU
+                /// Insere o registro na base
+                insereRegistroNaBase(dtcVals, dtcCode);
             }
         } else {
             dtcCodes.add("Não foram encontrados erros na ECU do veículo!");
@@ -232,10 +251,18 @@ public class TroubleCodesActivity extends Activity {
         lv.setTextFilterEnabled(true);
     }
 
-    private void adicionaNoLogOsErros(){
+    private void insereRegistroNaBase(Map<String, String> dtcVals, String dtcCode) {
+        //// ADICIONA NA TABELA DE ERROS DA ECU
+        errosEcu = new ErrosECU();
+        errosEcu.setCodigo(dtcCode);
+        errosEcu.setDescricao(dtcVals.get(dtcCode));
+        errosEcu.setData(ClassUtil.dataAtual());
+        errosEcu.setHashUser(userDao.getUsuario().getTicket());
+        errosEcu.setIdVeiculo(veiculoDao.buscaVeiculoUsuario().getId());
+        errosEcu.setLevel(1);
 
+        errosECUDao.inserir(errosEcu);
     }
-
 
     public class ModifiedTroubleCodesObdCommand extends TroubleCodesCommand {
         @Override
