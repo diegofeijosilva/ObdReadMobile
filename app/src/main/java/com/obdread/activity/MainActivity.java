@@ -19,7 +19,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -28,7 +27,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.LinearLayout;
@@ -51,7 +49,6 @@ import com.obdread.io.ObdCommandJob;
 import com.obdread.io.ObdGatewayService;
 import com.obdread.io.ObdProgressListener;
 import com.obdread.net.ObdReading;
-import com.obdread.net.ObdService;
 import com.obdread.trips.TripLog;
 import com.obdread.trips.TripRecord;
 import com.google.inject.Inject;
@@ -444,7 +441,7 @@ public class MainActivity extends RoboActivity implements ObdProgressListener, L
     }
 
     private void getTroubleCodes() {
-        startActivity(new Intent(this, TroubleCodesActivity.class));
+        startActivity(new Intent(this, ErrosEcuActivity.class));
     }
 
     private void startLiveData() {

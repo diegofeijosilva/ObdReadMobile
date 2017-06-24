@@ -61,7 +61,7 @@
         <activity android:name="com.obdread.activity.ConfigActivity" android:screenOrientation="portrait"/>
 
         <!-- Listagem de Erros da ECU -->
-        <activity android:name="com.obdread.activity.TroubleCodesActivity" android:screenOrientation="portrait"/>
+        <activity android:name="com.obdread.activity.ErrosEcuActivity" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

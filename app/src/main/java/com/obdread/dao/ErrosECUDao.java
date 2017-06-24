@@ -4,11 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.obdread.ed.ErrosECU;
 import com.obdread.ed.Usuario;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ErrosECUDao extends DaoGenerico {
 
@@ -29,6 +32,7 @@ public class ErrosECUDao extends DaoGenerico {
 
 	//	// Insere novo usuario
 	public Integer inserir(ErrosECU errosECU) {
+		Log.i(TABELA, "INSERINDO NOVO REGISTRO");
 		dbOpen();
 		ContentValues values = new ContentValues();
 
@@ -54,6 +58,42 @@ public class ErrosECUDao extends DaoGenerico {
 			int i = db.delete(TABELA, where, whereArgs);
 			dbClose();
 		return i;
+	}
+
+	public List<ErrosECU> listaErrosEcu() {
+
+		dbOpen();
+		Cursor c = db.rawQuery("SELECT * FROM "+ TABELA +" ORDER BY DATA", null);
+
+		List<ErrosECU> listaErrosECU = new ArrayList<ErrosECU>();
+
+		if (c.moveToFirst()) {
+
+				// Loop at� o final
+				do {
+					ErrosECU errosECU = new ErrosECU();
+					errosECU.setHashUser(c.getString(0));
+					errosECU.setIdVeiculo(c.getLong(1));
+					errosECU.setData(c.getString(2));
+					errosECU.setCodigo(c.getString(3));
+					errosECU.setDescricao(c.getString(4));
+					errosECU.setLevel(c.getInt(5));
+
+					listaErrosECU.add(errosECU);
+
+				} while (c.moveToNext());
+			}
+
+			c.close();
+			dbClose();
+
+	return listaErrosECU;
+	}
+
+	public void deletarTodos(){
+		dbOpen();
+		db.execSQL("delete from " + TABELA);
+		dbClose();
 	}
 
 //	// Retorna um usuario conforme id

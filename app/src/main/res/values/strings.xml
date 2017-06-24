@@ -150,8 +150,8 @@
     <string name="pref_gps_category_title">Enable GPS</string>
     <string name="pref_gps_category_summaryOff">Turn on GPS</string>
     <string name="pref_gps_category_summaryOn">Turn off GPS</string>
-    <string name="pref_gps_update_period_title">Update Period in Seconds</string>
-    <string name="pref_gps_update_period_summary">The length of time between querying new position in seconds</string>
+    <string name="pref_gps_update_period_title">Periodo em Segundos para envio</string>
+    <string name="pref_gps_update_period_summary">Informar o tempo em segundos que o aplicativo deve enviar as informações</string>
     <string name="pref_gps_distance_period_title">Update Period in Meters</string>
     <string name="pref_gps_distance_period_summary">Min Distance between location updates, in meters</string>
     <string name="pref_obd_protocols_title">OBD Protocol</string>

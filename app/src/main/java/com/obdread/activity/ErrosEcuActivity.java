@@ -40,18 +40,17 @@ import com.obdread.dao.VeiculoDao;
 import com.obdread.ed.ErrosECU;
 import com.obdread.io.BluetoothManager;
 import com.google.inject.Inject;
+import com.obdread.service.EnviaDadosWeb;
 import com.obdread.util.ClassUtil;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-public class TroubleCodesActivity extends Activity {
+public class ErrosEcuActivity extends Activity {
 
-    private static final String TAG = TroubleCodesActivity.class.getName();
+    private static final String TAG = ErrosEcuActivity.class.getName();
     private static final int NO_BLUETOOTH_DEVICE_SELECTED = 0;
     private static final int CANNOT_CONNECT_TO_DEVICE = 1;
     private static final int NO_DATA = 3;
@@ -80,14 +79,14 @@ public class TroubleCodesActivity extends Activity {
 
 
         public boolean handleMessage(Message msg) {
-             Log.d(TAG, "Message received on handler");
+             Log.d(TAG, "Mensagem recebida");
             switch (msg.what) {
                 case NO_BLUETOOTH_DEVICE_SELECTED:
                     makeToast("Sem interface OBD-II selecionado");
                     finish();
                     break;
                 case CANNOT_CONNECT_TO_DEVICE:
-                    makeToast(getString(R.string.text_bluetooth_error_connecting));
+                    makeToast("Favor selecionar a Interface OBD-II nas preferências!");
                     finish();
                     break;
 
@@ -117,7 +116,7 @@ public class TroubleCodesActivity extends Activity {
                     break;
 
                 case NO_DATA:
-                    makeToast(getString(R.string.text_dtc_no_data));
+                    makeToast("Sem Erros na ECU");
                     ///finish();
                     break;
                 case DATA_OK:
@@ -144,9 +143,10 @@ public class TroubleCodesActivity extends Activity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
+        // Identifica se a interface OBD foi pareada ao dispositivo
         remoteDevice = prefs.getString(ConfigActivity.BLUETOOTH_LIST_KEY, null);
         if (remoteDevice == null || "".equals(remoteDevice)) {
-            Log.e(TAG, "No Bluetooth device has been selected.");
+            Log.e(TAG, "Favor selecionar a Interface OBD-II nas preferências");
             mHandler.obtainMessage(NO_BLUETOOTH_DEVICE_SELECTED).sendToTarget();
         } else {
             gtct = new GetTroubleCodesTask();
@@ -170,33 +170,21 @@ public class TroubleCodesActivity extends Activity {
                 try {
                     sock = BluetoothManager.connect(dev);
                 } catch (Exception e) {
-                    Log.e(
-                            TAG,
-                            "There was an error while establishing connection. -> "
-                                    + e.getMessage()
-                    );
-                    Log.d(TAG, "Message received on handler here");
+                    Log.e(TAG,"Ocorreu um erro ao estabelecer a conexão. -> " + e.getMessage());
                     mHandler.obtainMessage(CANNOT_CONNECT_TO_DEVICE).sendToTarget();
                     return true;
                 }
                 try {
-
-                    Log.d("TESTRESET", "Trying reset");
-                    //new ObdResetCommand().run(sock.getInputStream(), sock.getOutputStream());
                     ResetTroubleCodesCommand clear = new ResetTroubleCodesCommand();
                     clear.run(sock.getInputStream(), sock.getOutputStream());
                     String result = clear.getFormattedResult();
                     Log.d("TESTRESET", "Trying reset result: " + result);
                 } catch (Exception e) {
-                    Log.e(
-                            TAG,
-                            "There was an error while establishing connection. -> "
-                                    + e.getMessage()
-                    );
+                    Log.e(TAG, "Ocorreu um erro ao estabelecer a conexão. -> " + e.getMessage());
                 }
                 gtct.closeSocket(sock);
-                // Refresh main activity upon close of dialog box
-                Intent refresh = new Intent(this, TroubleCodesActivity.class);
+                // Atualiza a activity principal
+                Intent refresh = new Intent(this, ErrosEcuActivity.class);
                 startActivity(refresh);
                 this.finish(); //
                 return true;
@@ -230,7 +218,7 @@ public class TroubleCodesActivity extends Activity {
 
         /// Monta uma lista com os códigos de erro + Descrição
         Map<String, String> dtcVals = getDict(R.array.dtc_keys, R.array.dtc_values);
-        //TODO replace below codes (res) with aboce dtcVals
+
         //String tmpVal = dtcVals.get(res.split("\n"));
         //String[] dtcCodes = new String[]{};
         ArrayList<String> dtcCodes = new ArrayList<String>();
@@ -285,7 +273,7 @@ public class TroubleCodesActivity extends Activity {
         @Override
         protected void onPreExecute() {
             //Create a new progress dialog
-            progressDialog = new ProgressDialog(TroubleCodesActivity.this);
+            progressDialog = new ProgressDialog(ErrosEcuActivity.this);
             //Set the progress dialog to display a horizontal progress bar
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             //Set the dialog title to 'Loading...'
@@ -327,10 +315,10 @@ public class TroubleCodesActivity extends Activity {
                 } catch (Exception e) {
                     Log.e(
                             TAG,
-                            "There was an error while establishing connection. -> "
+                            "Ocorreu um erro ao estabelecer a conexão. -> "
                                     + e.getMessage()
                     );
-                    Log.d(TAG, "Message received on handler here");
+                    Log.d(TAG, "Conectado a interface OBD-II");
                     mHandler.obtainMessage(CANNOT_CONNECT_TO_DEVICE).sendToTarget();
                     return null;
                 }
@@ -366,30 +354,30 @@ public class TroubleCodesActivity extends Activity {
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
+                    Log.e("DTC-ERRO", e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_IO).sendToTarget();
                     return null;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
+                    Log.e("DTC-ERRO", e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_IE).sendToTarget();
                     return null;
                 } catch (UnableToConnectException e) {
                     e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
+                    Log.e("DTC-ERRO", e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_UTC).sendToTarget();
                     return null;
                 } catch (MisunderstoodCommandException e) {
                     e.printStackTrace();
-                    Log.e("DTCERR", e.getMessage());
+                    Log.e("DTC-ERRO", e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_MIS).sendToTarget();
                     return null;
                 } catch (NoDataException e) {
-                    Log.e("DTCERR", e.getMessage());
+                    Log.e("DTC-ERRO", e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE_NODATA).sendToTarget();
                     return null;
                 } catch (Exception e) {
-                    Log.e("DTCERR", e.getMessage());
+                    Log.e("DTC-ERRO", e.getMessage());
                     mHandler.obtainMessage(OBD_COMMAND_FAILURE).sendToTarget();
                 } finally {
 

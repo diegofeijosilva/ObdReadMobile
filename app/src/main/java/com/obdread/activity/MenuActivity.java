@@ -5,8 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.obdread.service.EnviaDadosWeb;
 
 import obdread.com.obdreadmobile.R;
 
@@ -16,6 +17,11 @@ public class MenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        /// Verifica se possui dados para subir ao webservice
+        /// Sobe os dados através de uma thread separada da aplicação
+        EnviaDadosWeb task = new EnviaDadosWeb(this);
+        task.execute("TESTE");
     }
 
     // Activity das preferÃªncias
@@ -38,7 +44,7 @@ public class MenuActivity extends Activity {
     // Activity das preferÃªncias
     public void readErrosECU(View v){
         //Carrega o rastreamento
-        Intent it = new Intent (getBaseContext(), TroubleCodesActivity.class);
+        Intent it = new Intent (getBaseContext(), ErrosEcuActivity.class);
         startActivity(it);
     }
 
